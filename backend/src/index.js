@@ -19,13 +19,21 @@ mongoose.connect(process.env.MONGO_URI)
     console.error(err);
   })
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
+  // setImmediate(() => {
+  //   next (new Error('it is an error'));
+  // })   
   res.send('Hello');
 })
 
 app.post('/', (req, res) => {
   console.log(req.body);
   res.send('req.body');
+})
+
+app.use((error, req, res, next) => {
+  // res.status(err.status || 500);
+  res.send(error.message || '서버에서 에러가 났습니다.');
 })
 
 //정적인 파일을 불러올 수 있도록
