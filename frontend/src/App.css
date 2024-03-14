@@ -1,0 +1,11 @@
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
+}
+
+.appNone {
+  width: 100%;
+  height: 100vh;
+}

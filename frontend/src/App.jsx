@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
   },
   {
     path: 'products',
-    element: null,
+    element: <Layout />,
     children: [
       {
         path: '',
@@ -35,10 +35,10 @@ export const router = createBrowserRouter([
   },
   {
     path: 'join',
-    element: <JoinPage />,
+    element: <div className="appNone"><JoinPage /></div>,
   },
   {
     path: 'login',
-    element: <LoginPage />,
+    element: <div className="appNone"><LoginPage /></div>,
   },
 ])
