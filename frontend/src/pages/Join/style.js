@@ -33,7 +33,7 @@ export const JoinContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    height: 25rem;
+    height: 19rem;
   }
 
   .agree {
@@ -56,7 +56,7 @@ export const JoinContainer = styled.div`
     display: flex;
     flex-direction: column;      
     align-items: center;
-    padding: 1rem 0 0 1.3rem;
+    padding: 1rem 0 0 2rem;
     gap: 1.5rem;
     
     > div {
@@ -74,11 +74,5 @@ export const JoinContainer = styled.div`
       }
     }
 
-    .advertisementAgree{
-      display: flex;
-      flex-direction: column;
-      padding-left: 3.5rem;
-      gap: 1.2rem;
-    }
   }
 `

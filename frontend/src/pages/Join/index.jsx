@@ -16,13 +16,11 @@ export default function JoinPage() {
     {id: 2, isRequire: true, content: '전자금융거래 이용약관 동의', isCheck: false},
     {id: 3, isRequire: true, content: '개인정보 수집 및 이용 동의', isCheck: false},
     {id: 4, isRequire: false, content: '마케팅 목적의 개인정보 수집 및 이용 동의', isCheck: false},
-    {id: 5, isRequire: false, content: '광고성 정보 수신 동의', isCheck: false, sub: [
-      {id: 51, isRequire: false, content: '이메일 수신 동의', isCheck: false},
-      {id: 52, isRequire: false, content: 'sns 수신 동의', isCheck: false}
-    ]}
+    {id: 5, isRequire: false, content: '광고성 정보 수신 동의', isCheck: false}
   ]
 
   const [contentObj, setContentObj] = useState(agreeContent);
+  const [isAllCheck, setIsAllCheck] = useState(false);
 
   const isCheckHandler = (id) => {
     const changeStatus = contentObj.map(status => {
@@ -40,31 +38,32 @@ export default function JoinPage() {
     setContentObj(changeStatus);
   }
 
-  const subIsCheckHandler = (id) => {
-    const changeStatus = contentObj.map(element => {
-      if(element.sub) {
-        const tempStatus = element.sub.map(status => {
-          if(status.id === id) {
-            return {
-              ...status,
-              isCheck: !status.isCheck
-            }
-          } else {
-            return {
-              ...status
-            }
-          }
-        })
-        return {...element,
-          sub:tempStatus}
-      }else {
-        return{
-          ...element
-        }
+  const isAllCheckHandler = () => {
+    const changeCheckTrue = contentObj.map((element) => {
+      return{
+        ...element,
+        isCheck: !isAllCheck
       }
     })
-    setContentObj(changeStatus);
+    setContentObj(changeCheckTrue);
   }
+
+  useEffect(() => {
+    let count = 0;
+    
+    for(let i = 0; i < contentObj.length; i++) {
+      if(contentObj[i].isCheck) {
+        count += 1;
+      }
+    }
+
+    if(count === contentObj.length) {
+      setIsAllCheck(true);
+    } else {
+      setIsAllCheck(false);
+    }
+
+  }, [contentObj])
 
   return (
     <>
@@ -83,21 +82,18 @@ export default function JoinPage() {
         <div className='agreeBox'>
           <div className='agree'>
             <div className='checkContainer'>
-              <div>
+              <div onClick={() => {isAllCheckHandler()}}>
                 <Checkbox 
                   width='30' 
                   height='30' 
                   content='전체 동의'
-                  
+                  isCheck={isAllCheck}
                 />
               </div>
             </div>
           </div>
 
             {contentObj && contentObj.map((element) => {
-              if(element.sub){
-                
-              }
               return(
                 <div className='consentItems'>
                   <div key={element.id}>
@@ -114,27 +110,10 @@ export default function JoinPage() {
                     </div>
                     <ArrowIcon width='10' />
                   </div>
-                  <div className='advertisementAgree'>
-                    {element.sub && element.sub.map((element) => {
-                      return(
-                        <div className='checkContainer' key={element.id}>
-                          <div onClick={()=> {subIsCheckHandler(element.id)}}>
-                            <Checkbox 
-                              width='25' 
-                              height='25'
-                              isRequire= {element.isRequire} 
-                              content={element.content}
-                              isCheck={element.isCheck}
-                            />
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
                 </div>
               )
             })}
-
+            
         </div>
         <Btn>회원가입</Btn>
       </Styled.JoinContainer>
