@@ -93,26 +93,55 @@ export default function JoinPage() {
 
   //전체 동의 체크 핸들러
   const isAllCheckHandler = () => {
-    const changeCheckTrue = contentObj.map((element) => {
-      return{
-        ...element,
-        isCheck: !isAllCheck
+    const changeStatus = contentObj.map(element => {
+      if(element.sub) {
+        const tempStatus = element.sub.map(status => {
+          return {
+            ...status,
+            isCheck: !isAllCheck
+          }
+        })
+        return {
+          ...element,
+          isCheck: !isAllCheck,
+          sub: tempStatus
+        }
+      } else {
+        return {
+          ...element,
+          isCheck: !isAllCheck
+        }
       }
     })
-    setContentObj(changeCheckTrue);
+    setContentObj(changeStatus);
   }
 
   useEffect(() => {
     //전체 동의 여부 판단
     let count = 0;
+    let subCount = 0;
     
     for(let i = 0; i < contentObj.length; i++) {
-      if(contentObj[i].isCheck) {
-        count += 1;
+      if(contentObj[i].sub){
+        contentObj[i].sub.map(element => {
+          if(element.isCheck){
+            count += 1;
+            subCount += 1;
+          } else {
+            subCount += 1;
+          }
+        })
+        if(contentObj[i].isCheck) {
+          count += 1;
+        }
+      } else {
+        if(contentObj[i].isCheck) {
+          count += 1;
+        }
       }
     }
 
-    if(count === contentObj.length) {
+    if(count === contentObj.length + subCount) {
       setIsAllCheck(true);
     } else {
       setIsAllCheck(false);
