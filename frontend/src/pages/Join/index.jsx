@@ -161,7 +161,7 @@ export default function JoinPage() {
             <Input type="password" placeholder='비밀번호' autoComplete='off'  />
             <Input type="password" placeholder='비밀번호 확인'  autoComplete='off' />
             <Input type="text" placeholder='이름' />
-            <Input type="text" placeholder='휴대폰 번호' />
+            <Input type="text" placeholder='휴대폰 번호 (숫자만 입력)' maxlength="13" />
           </form>
         </div>
         <div className='agreeBox'>
