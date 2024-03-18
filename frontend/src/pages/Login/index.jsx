@@ -11,7 +11,7 @@ import { Btn, Input } from '../../components/style';
 import CatButlerLogo from "../../components/CatButlerLogo";
 
 export default function LoginPage() {
-  const [isCheck, setIsCheck] = useState(true);
+  const [isCheck, setIsCheck] = useState(false);
 
   return (
     <>

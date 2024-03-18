@@ -1,8 +1,9 @@
+import * as Styled from './style';
 
 export default function Category() {
   return (
-    <>
-      Category
-    </>
+    <Styled.categoryContainer>
+      <p className='categoryContent'>Category</p>
+    </Styled.categoryContainer>
   )
 }
