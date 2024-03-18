@@ -9,20 +9,41 @@ export const footerContainer = styled.div`
   align-items: center;
   background-color: ${primary};
   position : relative;
-  padding: 2rem 3rem;
+  padding: 4rem 10rem 4rem 8rem;
+  color: ${darkPrimary};
 
   .companyContent {
-
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
   }
 
   .textBox {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    color: ${darkPrimary};
   }
 
   .title {
     font-weight: 600;
+  }
+
+  .customerService {
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .companyNumber {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .serviceContent{
+    width: 10rem;
+    display: flex;
+    justify-content: right;
   }
 `

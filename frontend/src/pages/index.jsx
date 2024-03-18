@@ -1,8 +1,15 @@
+import * as Styled from './style';
 
 export default function MainPage() {
   return (
-    <>
-      MainPage
-    </>
+    <Styled.mainContainer>
+      <div className='mainSlide'>
+
+      </div>
+      <div className='bestItem'>
+        <p className='title'>베스트 100</p>
+      </div>
+
+    </Styled.mainContainer>
   )
 }
