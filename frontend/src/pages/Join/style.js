@@ -26,7 +26,9 @@ export const JoinContainer = styled.div`
   form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
   }
 
   .agreeBox {

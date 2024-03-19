@@ -9,6 +9,7 @@ import { Btn, Input } from '../../components/style';
 //icon
 import CatButlerLogo from "../../components/CatButlerLogo";
 import ArrowIcon from './../../components/icons/ArrowIcon';
+import CheckInputValue from './../../components/CheckInputValue';
 
 export default function JoinPage() {
   const agreeContent = [
@@ -150,74 +151,89 @@ export default function JoinPage() {
   }, [contentObj])
 
 
+  const inputContent = [
+    {id: 'email', type: 'text', placeholder: '이메일'},
+    {id: 'password', type: 'password', placeholder: '비밀번호',  maxLength: '20'},
+    {id: 'repassword', type: 'password', placeholder: '비밀번호 확인', maxLength: '20'},
+    {id: 'userName', type: 'text', placeholder: '이름'},
+    {id: 'phoneNumber', type: 'number', placeholder: '핸드폰 번호', maxLength: '13'},
+  ]
+
   return (
     <>
       <Styled.JoinContainer>
         <Link to='/'><CatButlerLogo /></Link>
-        <div className='writeInformation'>
-          <p>회원정보를 입력해주세요</p>
           <form>
-            <Input type="text" placeholder='이메일' />
-            <Input type="password" placeholder='비밀번호' autoComplete='off'  />
-            <Input type="password" placeholder='비밀번호 확인'  autoComplete='off' />
-            <Input type="text" placeholder='이름' />
-            <Input type="text" placeholder='휴대폰 번호 (숫자만 입력)' maxlength="13" />
-          </form>
-        </div>
-        <div className='agreeBox'>
-          <div className='agree'>
-            <div className='checkContainer'>
-              <div onClick={() => {isAllCheckHandler()}}>
-                <Checkbox 
-                  width='30' 
-                  height='30' 
-                  content='전체 동의'
-                  isCheck={isAllCheck}
-                />
-              </div>
-            </div>
-          </div>
-
-            {contentObj && contentObj.map((element) => {
-              return(
-                <div className='consentItems'>
+            <div className='writeInformation'>
+              <p>회원정보를 입력해주세요</p>
+              {inputContent && inputContent.map((element) => {
+                return (
                   <div key={element.id}>
-                    <div className='checkContainer'>
-                      <div onClick={()=> {isCheckHandler(element.id)}}>
-                        <Checkbox 
-                          width='25' 
-                          height='25'
-                          isRequire = {element.isRequire}
-                          content={element.content}
-                          isCheck={element.isCheck}
-                        />
-                      </div>
-                    </div>
-                    <ArrowIcon width='10' />
+                    <CheckInputValue
+                      id={element.id}
+                      type={element.type}
+                      placeholder={element.placeholder}
+                    />
                   </div>
-                  <div className='advertisementAgree'>
-                    {element.sub && element.sub.map((elem) => {
-                      return(
-                        <div className='checkContainer' key={elem.id}>
-                          <div onClick={()=> {isCheckHandler(elem.id)}}>
+                )
+              })}
+            </div>
+
+            <div className='agreeBox'>
+              <div className='agree'>
+                <div className='checkContainer'>
+                  <div onClick={() => {isAllCheckHandler()}}>
+                    <Checkbox 
+                      width='30' 
+                      height='30' 
+                      content='전체 동의'
+                      isCheck={isAllCheck}
+                    />
+                  </div>
+                </div>
+              </div>
+
+                {contentObj && contentObj.map((element) => {
+                  return(
+                    <div className='consentItems' key={element.id}>
+                      <div>
+                        <div className='checkContainer'>
+                          <div onClick={()=> {isCheckHandler(element.id)}}>
                             <Checkbox 
                               width='25' 
                               height='25'
-                              isRequire= {elem.isRequire} 
-                              content={elem.content}
-                              isCheck={elem.isCheck}
+                              isRequire = {element.isRequire}
+                              content={element.content}
+                              isCheck={element.isCheck}
                             />
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })}
-            
-        </div>
-        <Btn>회원가입</Btn>
+                        <ArrowIcon width='10' />
+                      </div>
+                      <div className='advertisementAgree'>
+                        {element.sub && element.sub.map((elem) => {
+                          return(
+                            <div className='checkContainer' key={elem.id}>
+                              <div onClick={()=> {isCheckHandler(elem.id)}}>
+                                <Checkbox 
+                                  width='25' 
+                                  height='25'
+                                  isRequire= {elem.isRequire} 
+                                  content={elem.content}
+                                  isCheck={elem.isCheck}
+                                />
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
+                
+            </div>
+            <Btn>회원가입</Btn>
+          </form>
       </Styled.JoinContainer>
     </>
   )
