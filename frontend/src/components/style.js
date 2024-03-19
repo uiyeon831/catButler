@@ -23,4 +23,13 @@ export const Input = styled.input`
   border: solid 1px ${darkPrimary};
   border-radius: 1.3rem;
   padding: 1.2rem;
+
+  &::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `

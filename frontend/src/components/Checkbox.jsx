@@ -16,7 +16,7 @@ export default function Checkbox({ width, height, isCheck, content, isRequire })
 
   return (
     <CheckboxContainer>
-      <input type="checkbox" id='agreeCheckbox' className='checkbox' />
+      <input type="checkbox" className='checkbox' />
       <label htmlFor="checkbox">
         {isCheck ? <CheckIcon width={width} height={height} fill={darkPrimary} stroke={white} /> : <CheckIcon width={width} height={height} />}
       </label>

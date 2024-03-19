@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 import Checkbox from '../../components/Checkbox';
+import CheckInputValue from '../../components/CheckInputValue';
 
 //styled-components
 import * as Styled from './style';
@@ -12,6 +13,11 @@ import CatButlerLogo from "../../components/CatButlerLogo";
 
 export default function LoginPage() {
   const [isCheck, setIsCheck] = useState(false);
+
+  const inputContent = [
+    {id: 'email', type: 'text', placeholder: '이메일'},
+    {id: 'loginPassword', type: 'password', placeholder: '비밀번호'},
+  ]
 
   return (
     <>
@@ -24,8 +30,17 @@ export default function LoginPage() {
         <div className='loginBox'>
           <form>
             <div className='inputBox'> 
-              <Input type="text" placeholder="이메일" />
-              <Input type="password" placeholder="비밀번호" autoComplete='off' />
+              {inputContent && inputContent.map((element) => {
+                  return (
+                    <div key={element.id}>
+                      <CheckInputValue
+                        id={element.id}
+                        type={element.type}
+                        placeholder={element.placeholder}
+                      />
+                    </div>
+                  )
+                })}
             </div>
             <div className='checkContainer'>
               <div onClick={() => {setIsCheck(!isCheck)}}>
