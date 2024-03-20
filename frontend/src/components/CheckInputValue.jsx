@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { Input } from '../components/style';
 
-export default function CheckInputValue({ id, type, placeholder, maxLength='100' }) {
+export default function CheckInputValue({ 
+  id, type, placeholder, 
+  joinObj, index, joinHandler
+}) 
+{
   const [text, setText] = useState('');
   const [inputValue, setInputValue] = useState(' ');
 
@@ -13,6 +17,7 @@ export default function CheckInputValue({ id, type, placeholder, maxLength='100'
       const isRight = emailRegex.test(inputValue);
       if(isRight){
         setText('');
+        joinHandler(joinObj, index, inputValue);
       } else if(inputValue === ' ') {
         setText('');
       } else if (!inputValue) {
@@ -25,6 +30,7 @@ export default function CheckInputValue({ id, type, placeholder, maxLength='100'
       const isRight = passwordRegex.test(inputValue);
       if(isRight){
         setText('');
+        joinHandler(joinObj, index, inputValue);
       } else if(inputValue === ' ') {
         setText('');
       } else if (!inputValue) {
@@ -33,7 +39,9 @@ export default function CheckInputValue({ id, type, placeholder, maxLength='100'
         setText('비밀번호 형식이 올바르지 않습니다.');
       }
     } else if(id === 'repassword') {
-      if(inputValue === ' ') {
+      if(joinObj[index-1].value === inputValue) {
+
+      }else if(inputValue === ' ') {
         setText('');
       } else if (!inputValue) {
         setText('비밀번호 확인을 해주세요');
@@ -43,12 +51,15 @@ export default function CheckInputValue({ id, type, placeholder, maxLength='100'
         setText('');
       } else if (!inputValue) {
         setText('이름을 입력해주세요');
-      } 
+      } else {
+        joinHandler(joinObj, index, inputValue);
+      }
     } else if(id === 'phoneNumber') {
-      const phoneNumberRegex = /^(01[016789]{1})-[0-9]{3,4}-[0-9]{4}$/;
+      const phoneNumberRegex = /^(01[016789]{1})[0-9]{3,4}[0-9]{4}$/;
       const isRight = phoneNumberRegex.test(inputValue);
       if(isRight){
         setText('');
+        joinHandler(joinObj, index, inputValue);
       } else if(inputValue === ' ') {
         setText('');
       } else if (!inputValue) {
@@ -78,7 +89,6 @@ export default function CheckInputValue({ id, type, placeholder, maxLength='100'
         placeholder={placeholder} 
         autoComplete='off' 
         onChange={onInputHandler} 
-        maxLength={maxLength}
       />
       <p className="unRightText">
         {text}

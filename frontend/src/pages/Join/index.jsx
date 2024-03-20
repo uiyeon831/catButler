@@ -4,7 +4,7 @@ import Checkbox from '../../components/Checkbox';
 
 //styled-components
 import * as Styled from './style';
-import { Btn, Input } from '../../components/style';
+import { Btn } from '../../components/style';
 
 //icon
 import CatButlerLogo from "../../components/CatButlerLogo";
@@ -159,6 +159,21 @@ export default function JoinPage() {
     {id: 'phoneNumber', type: 'number', placeholder: '핸드폰 번호', maxLength: '13'},
   ]
 
+  const [joinObj, setJoinObj] = useState([
+    {id: 'email', value: ''},
+    {id: 'password', value: ''},
+    {id: 'repassword', value: ''},
+    {id: 'userName', value: ''},
+    {id: 'phoneNumber', value: ''}
+  ])
+
+  const joinHandler = ( prevObj, index, value) => {
+    const oooooo = prevObj;
+    oooooo[index].value = value;
+    setJoinObj(oooooo);
+    console.log("joinObj: ", joinObj)
+  }
+
   return (
     <>
       <Styled.JoinContainer>
@@ -166,13 +181,16 @@ export default function JoinPage() {
           <form>
             <div className='writeInformation'>
               <p>회원정보를 입력해주세요</p>
-              {inputContent && inputContent.map((element) => {
+              {inputContent && inputContent.map((element, index) => {
                 return (
                   <div key={element.id}>
                     <CheckInputValue
                       id={element.id}
                       type={element.type}
                       placeholder={element.placeholder}
+                      index={index}
+                      joinObj={joinObj}
+                      joinHandler={joinHandler}
                     />
                   </div>
                 )
