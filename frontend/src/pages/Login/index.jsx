@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 import Checkbox from '../../components/Checkbox';
-import CheckInputValue from '../../components/CheckInputValue';
 
 //styled-components
 import * as Styled from './style';
@@ -14,10 +13,26 @@ import CatButlerLogo from "../../components/CatButlerLogo";
 export default function LoginPage() {
   const [isCheck, setIsCheck] = useState(false);
 
-  const inputContent = [
-    {id: 'email', type: 'text', placeholder: '이메일'},
-    {id: 'loginPassword', type: 'password', placeholder: '비밀번호'},
-  ]
+    //로그인 기능 ↓↓
+    const [loginObj, setloginObj] = useState({
+      email: ' ',
+      password: ' ',
+    })
+  
+    const [unCorrectText, setUnCorrectText] = useState({
+      email: '',
+      password: '',
+    })
+  
+    let correctCount = 0;
+  
+    const onLoginHandler = (e) => {
+      const { name, value } = e.target;
+      setloginObj({
+        ...loginObj,
+        [name]: value
+      });
+    }
 
   return (
     <>
@@ -30,17 +45,25 @@ export default function LoginPage() {
         <div className='loginBox'>
           <form>
             <div className='inputBox'> 
-              {inputContent && inputContent.map((element) => {
-                  return (
-                    <div key={element.id}>
-                      <CheckInputValue
-                        id={element.id}
-                        type={element.type}
-                        placeholder={element.placeholder}
-                      />
-                    </div>
-                  )
-                })}
+              <div className='InputContainer'>
+                <Input 
+                  type='text'
+                  name='email'
+                  placeholder='이메일'
+                  onChange={onLoginHandler}
+                />
+                <p className='unRightText'></p>
+              </div>
+              <div className='InputContainer'>
+                <Input 
+                  type='password'
+                  name='password'
+                  autoComplete='off'
+                  placeholder='비밀번호'
+                  onChange={onLoginHandler}
+                />
+                <p className='unRightText'></p>
+              </div>
             </div>
             <div className='checkContainer'>
               <div onClick={() => {setIsCheck(!isCheck)}}>

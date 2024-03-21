@@ -31,6 +31,18 @@ export const JoinContainer = styled.div`
     gap: 2rem;
   }
 
+  .InputContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .unRightText {
+    color: red;
+    font-size: 0.8rem;
+    padding-left: 1rem;
+  }
+
   .agreeBox {
     display: flex;
     flex-direction: column;

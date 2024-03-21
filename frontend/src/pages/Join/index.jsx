@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import Checkbox from '../../components/Checkbox';
+import { emailCheck, passwordCheck, confirmPasswordCheck, userNameCheck, phoneNumberCheck } from '../../components/inputValueCheck';
 
 //styled-components
 import * as Styled from './style';
-import { Btn } from '../../components/style';
+import { Btn, Input } from '../../components/style';
 
 //icon
 import CatButlerLogo from "../../components/CatButlerLogo";
 import ArrowIcon from './../../components/icons/ArrowIcon';
-import CheckInputValue from './../../components/CheckInputValue';
 
 export default function JoinPage() {
+
+  //동의 체크 관련 기능 ↓↓
   const agreeContent = [
     {id: 1, isRequire: true, content: '냥집사 이용약관 동의', isCheck: false},
     {id: 2, isRequire: true, content: '전자금융거래 이용약관 동의', isCheck: false},
@@ -151,50 +153,145 @@ export default function JoinPage() {
   }, [contentObj])
 
 
-  const inputContent = [
-    {id: 'email', type: 'text', placeholder: '이메일'},
-    {id: 'password', type: 'password', placeholder: '비밀번호',  maxLength: '20'},
-    {id: 'repassword', type: 'password', placeholder: '비밀번호 확인', maxLength: '20'},
-    {id: 'userName', type: 'text', placeholder: '이름'},
-    {id: 'phoneNumber', type: 'number', placeholder: '핸드폰 번호', maxLength: '13'},
-  ]
+  //회원가입 기능 ↓↓
+  const [joinObj, setJoinObj] = useState({
+    email: ' ',
+    password: ' ',
+    confirmPassword: ' ',
+    userName: ' ',
+    phoneNumber: ' '
+  })
 
-  const [joinObj, setJoinObj] = useState([
-    {id: 'email', value: ''},
-    {id: 'password', value: ''},
-    {id: 'repassword', value: ''},
-    {id: 'userName', value: ''},
-    {id: 'phoneNumber', value: ''}
-  ])
+  const [unCorrectText, setUnCorrectText] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    userName: '',
+    phoneNumber: ''
+  })
 
-  const joinHandler = ( prevObj, index, value) => {
-    const oooooo = prevObj;
-    oooooo[index].value = value;
-    setJoinObj(oooooo);
-    console.log("joinObj: ", joinObj)
+  const onJoinHandler = (e) => {
+    const { name, value } = e.target;
+    setJoinObj({
+      ...joinObj,
+      [name]: value
+    });
   }
+
+  let correctCount = 0;
+
+  //유효성 체크
+  useEffect(()=>{  
+    correctCount = 0;
+
+    const isEmail = emailCheck(joinObj.email);
+    if(isEmail === 'true'){
+      setUnCorrectText(prev => ({...prev, email: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, email: isEmail}));
+    }
+
+    const isPassword = passwordCheck(joinObj.password);
+    if(isPassword === 'true'){
+      setUnCorrectText(prev => ({...prev, password: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, password: isPassword}));
+    }
+
+    const isConfirmPassword = confirmPasswordCheck(joinObj.confirmPassword, joinObj.password);
+    if(isConfirmPassword === 'true'){
+      setUnCorrectText(prev => ({...prev, confirmPassword: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, confirmPassword: isConfirmPassword}));
+    }
+
+    const isUserName = userNameCheck(joinObj.userName);
+    if(isUserName === 'true'){
+      setUnCorrectText(prev => ({...prev, userName: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, userName: isUserName}));
+    }
+
+    const isPhoneNumber = phoneNumberCheck(joinObj.phoneNumber);
+    if(isPhoneNumber === 'true'){
+      setUnCorrectText(prev => ({...prev, phoneNumber: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, phoneNumber: isPhoneNumber}));
+    }
+    console.log('correctCount', correctCount);
+  },[joinObj])
+
+  const submitHandler = () => {
+    const body = {
+      email: joinObj.email,
+      password: joinObj.password,
+      userName: joinObj.userName,
+      phoneNumber: joinObj.phoneNumber
+    }
+
+
+  };
+
 
   return (
     <>
       <Styled.JoinContainer>
         <Link to='/'><CatButlerLogo /></Link>
-          <form>
+          <form onSubmit={() => {submitHandler}}>
             <div className='writeInformation'>
               <p>회원정보를 입력해주세요</p>
-              {inputContent && inputContent.map((element, index) => {
-                return (
-                  <div key={element.id}>
-                    <CheckInputValue
-                      id={element.id}
-                      type={element.type}
-                      placeholder={element.placeholder}
-                      index={index}
-                      joinObj={joinObj}
-                      joinHandler={joinHandler}
-                    />
-                  </div>
-                )
-              })}
+              <div className='InputContainer'>
+                <Input 
+                  type='text'
+                  name='email'
+                  placeholder='이메일'
+                  onChange={onJoinHandler}
+                />
+                <p className='unRightText'>{unCorrectText.email}</p>
+              </div>
+              <div className='InputContainer'>
+                <Input 
+                  type='password'
+                  name='password'
+                  autoComplete='off'
+                  placeholder='비밀번호'
+                  onChange={onJoinHandler}
+                />
+                <p className='unRightText'>{unCorrectText.password}</p>
+              </div>
+              <div className='InputContainer'>
+                <Input 
+                  type='password'
+                  name='confirmPassword'
+                  autoComplete='off'
+                  placeholder='비밀번호 확인'
+                  onChange={onJoinHandler}
+                />
+                <p className='unRightText'>{unCorrectText.confirmPassword}</p>
+              </div>
+              <div className='InputContainer'>
+                <Input 
+                  type='text'
+                  name='userName'
+                  placeholder='이름'
+                  onChange={onJoinHandler}
+                />
+                <p className='unRightText'>{unCorrectText.userName}</p>
+              </div>
+              <div className='InputContainer'>
+                <Input 
+                  type='number'
+                  name='phoneNumber'
+                  placeholder='핸드폰 번호'
+                  onChange={onJoinHandler}
+                />
+                <p className='unRightText'>{unCorrectText.phoneNumber}</p>
+              </div>
             </div>
 
             <div className='agreeBox'>
@@ -250,7 +347,7 @@ export default function JoinPage() {
                 })}
                 
             </div>
-            <Btn>회원가입</Btn>
+            <Btn type="submit">회원가입</Btn>
           </form>
       </Styled.JoinContainer>
     </>

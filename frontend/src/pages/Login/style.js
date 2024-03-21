@@ -51,6 +51,18 @@ export const LoginContainer = styled.div`
       gap: 1rem;
     }
 
+    .InputContainer{
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .unRightText {
+      color: red;
+      font-size: 0.8rem;
+      padding-left: 1rem;
+    }
+
     .checkContainer {
       width: 27rem;
       height: 1.4rem;
