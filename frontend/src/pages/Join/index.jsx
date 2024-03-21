@@ -223,7 +223,6 @@ export default function JoinPage() {
     } else {
       setUnCorrectText(prev => ({...prev, phoneNumber: isPhoneNumber}));
     }
-    console.log('correctCount', correctCount);
   },[joinObj])
 
   const submitHandler = () => {
@@ -259,7 +258,7 @@ export default function JoinPage() {
                   type='password'
                   name='password'
                   autoComplete='off'
-                  placeholder='비밀번호'
+                  placeholder='비밀번호 (8~20 글자 / 영문,숫자,특수문자 조합)'
                   onChange={onJoinHandler}
                 />
                 <p className='unRightText'>{unCorrectText.password}</p>
@@ -287,7 +286,7 @@ export default function JoinPage() {
                 <Input 
                   type='number'
                   name='phoneNumber'
-                  placeholder='핸드폰 번호'
+                  placeholder='핸드폰 번호 (숫자만 입력)'
                   onChange={onJoinHandler}
                 />
                 <p className='unRightText'>{unCorrectText.phoneNumber}</p>
