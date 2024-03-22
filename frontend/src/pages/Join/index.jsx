@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
+
 import Checkbox from '../../components/Checkbox';
 import { emailCheck, passwordCheck, confirmPasswordCheck, userNameCheck, phoneNumberCheck } from '../../components/inputValueCheck';
+import { api } from '../../utils/axios';
 
 //styled-components
 import * as Styled from './style';
@@ -12,6 +14,7 @@ import CatButlerLogo from "../../components/CatButlerLogo";
 import ArrowIcon from './../../components/icons/ArrowIcon';
 
 export default function JoinPage() {
+  const navigate = useNavigate();
 
   //동의 체크 관련 기능 ↓↓
   const agreeContent = [
@@ -179,9 +182,7 @@ export default function JoinPage() {
   }
 
   let correctCount = 0;
-
-  //유효성 체크
-  useEffect(()=>{  
+  const valueIsRight = () => {
     correctCount = 0;
 
     const isEmail = emailCheck(joinObj.email);
@@ -223,9 +224,17 @@ export default function JoinPage() {
     } else {
       setUnCorrectText(prev => ({...prev, phoneNumber: isPhoneNumber}));
     }
+  }
+
+  //유효성 체크
+  useEffect(()=>{  
+    valueIsRight();
+    
   },[joinObj])
 
-  const submitHandler = () => {
+  const submitHandler = async() => {
+    valueIsRight();
+
     const body = {
       email: joinObj.email,
       password: joinObj.password,
@@ -233,121 +242,136 @@ export default function JoinPage() {
       phoneNumber: joinObj.phoneNumber
     }
 
+    const isRequireContent =  contentObj.filter((element) => element.isRequire === true );
+    const isAllCheck = isRequireContent.filter((element) => element.isCheck === true);
+    
 
+    if(correctCount !== Object.keys(joinObj).length){
+      alert('회원정보를 확인해주세요');
+    } else if(isRequireContent.length !== isAllCheck.length){
+      alert('필수항목을 동의해주세요');
+    } else if(correctCount === Object.keys(joinObj).length && isRequireContent.length === isAllCheck.length) {
+      try {
+        const joinApi = await api.post('/users/register');
+        if(joinApi.status){
+          navigate('/');
+        }
+        console.log(body);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
-
 
   return (
     <>
       <Styled.JoinContainer>
         <Link to='/'><CatButlerLogo /></Link>
-          <form onSubmit={() => {submitHandler}}>
-            <div className='writeInformation'>
-              <p>회원정보를 입력해주세요</p>
-              <div className='InputContainer'>
-                <Input 
-                  type='text'
-                  name='email'
-                  placeholder='이메일'
-                  onChange={onJoinHandler}
-                />
-                <p className='unRightText'>{unCorrectText.email}</p>
-              </div>
-              <div className='InputContainer'>
-                <Input 
-                  type='password'
-                  name='password'
-                  autoComplete='off'
-                  placeholder='비밀번호 (8~20 글자 / 영문,숫자,특수문자 조합)'
-                  onChange={onJoinHandler}
-                />
-                <p className='unRightText'>{unCorrectText.password}</p>
-              </div>
-              <div className='InputContainer'>
-                <Input 
-                  type='password'
-                  name='confirmPassword'
-                  autoComplete='off'
-                  placeholder='비밀번호 확인'
-                  onChange={onJoinHandler}
-                />
-                <p className='unRightText'>{unCorrectText.confirmPassword}</p>
-              </div>
-              <div className='InputContainer'>
-                <Input 
-                  type='text'
-                  name='userName'
-                  placeholder='이름'
-                  onChange={onJoinHandler}
-                />
-                <p className='unRightText'>{unCorrectText.userName}</p>
-              </div>
-              <div className='InputContainer'>
-                <Input 
-                  type='number'
-                  name='phoneNumber'
-                  placeholder='핸드폰 번호 (숫자만 입력)'
-                  onChange={onJoinHandler}
-                />
-                <p className='unRightText'>{unCorrectText.phoneNumber}</p>
-              </div>
+          <div className='writeInformation'>
+            <p>회원정보를 입력해주세요</p>
+            <div className='InputContainer'>
+              <Input 
+                type='text'
+                name='email'
+                placeholder='이메일'
+                onChange={onJoinHandler}
+              />
+              <p className='unRightText'>{unCorrectText.email}</p>
             </div>
+            <div className='InputContainer'>
+              <Input 
+                type='password'
+                name='password'
+                autoComplete='off'
+                placeholder='비밀번호 (8~20 글자 / 영문,숫자,특수문자 조합)'
+                onChange={onJoinHandler}
+              />
+              <p className='unRightText'>{unCorrectText.password}</p>
+            </div>
+            <div className='InputContainer'>
+              <Input 
+                type='password'
+                name='confirmPassword'
+                autoComplete='off'
+                placeholder='비밀번호 확인'
+                onChange={onJoinHandler}
+              />
+              <p className='unRightText'>{unCorrectText.confirmPassword}</p>
+            </div>
+            <div className='InputContainer'>
+              <Input 
+                type='text'
+                name='userName'
+                placeholder='이름'
+                onChange={onJoinHandler}
+              />
+              <p className='unRightText'>{unCorrectText.userName}</p>
+            </div>
+            <div className='InputContainer'>
+              <Input 
+                type='number'
+                name='phoneNumber'
+                placeholder='핸드폰 번호 (숫자만 입력)'
+                onChange={onJoinHandler}
+              />
+              <p className='unRightText'>{unCorrectText.phoneNumber}</p>
+            </div>
+          </div>
 
-            <div className='agreeBox'>
-              <div className='agree'>
-                <div className='checkContainer'>
-                  <div onClick={() => {isAllCheckHandler()}}>
-                    <Checkbox 
-                      width='30' 
-                      height='30' 
-                      content='전체 동의'
-                      isCheck={isAllCheck}
-                    />
-                  </div>
+          <div className='agreeBox'>
+            <div className='agree'>
+              <div className='checkContainer'>
+                <div onClick={() => {isAllCheckHandler()}}>
+                  <Checkbox 
+                    width='30' 
+                    height='30' 
+                    content='전체 동의'
+                    isCheck={isAllCheck}
+                  />
                 </div>
               </div>
-
-                {contentObj && contentObj.map((element) => {
-                  return(
-                    <div className='consentItems' key={element.id}>
-                      <div>
-                        <div className='checkContainer'>
-                          <div onClick={()=> {isCheckHandler(element.id)}}>
-                            <Checkbox 
-                              width='25' 
-                              height='25'
-                              isRequire = {element.isRequire}
-                              content={element.content}
-                              isCheck={element.isCheck}
-                            />
-                          </div>
-                        </div>
-                        <ArrowIcon width='10' />
-                      </div>
-                      <div className='advertisementAgree'>
-                        {element.sub && element.sub.map((elem) => {
-                          return(
-                            <div className='checkContainer' key={elem.id}>
-                              <div onClick={()=> {isCheckHandler(elem.id)}}>
-                                <Checkbox 
-                                  width='25' 
-                                  height='25'
-                                  isRequire= {elem.isRequire} 
-                                  content={elem.content}
-                                  isCheck={elem.isCheck}
-                                />
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  )
-                })}
-                
             </div>
-            <Btn type="submit">회원가입</Btn>
-          </form>
+
+              {contentObj && contentObj.map((element) => {
+                return(
+                  <div className='consentItems' key={element.id}>
+                    <div>
+                      <div className='checkContainer'>
+                        <div onClick={()=> {isCheckHandler(element.id)}}>
+                          <Checkbox 
+                            width='25' 
+                            height='25'
+                            isRequire = {element.isRequire}
+                            content={element.content}
+                            isCheck={element.isCheck}
+                          />
+                        </div>
+                      </div>
+                      <ArrowIcon width='10' />
+                    </div>
+                    <div className='advertisementAgree'>
+                      {element.sub && element.sub.map((elem) => {
+                        return(
+                          <div className='checkContainer' key={elem.id}>
+                            <div onClick={()=> {isCheckHandler(elem.id)}}>
+                              <Checkbox 
+                                width='25' 
+                                height='25'
+                                isRequire= {elem.isRequire} 
+                                content={elem.content}
+                                isCheck={elem.isCheck}
+                              />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+              
+          </div>
+          <Btn onClick={() => {submitHandler()}}>회원가입</Btn>
       </Styled.JoinContainer>
     </>
   )
