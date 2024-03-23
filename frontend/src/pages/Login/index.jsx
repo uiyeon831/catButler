@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Checkbox from '../../components/Checkbox';
 
@@ -9,30 +9,75 @@ import { Btn, Input } from '../../components/style';
 
 //icon
 import CatButlerLogo from "../../components/CatButlerLogo";
+import { emailCheck, loginPasswordCheck } from '../../components/inputValueCheck';
 
 export default function LoginPage() {
   const [isCheck, setIsCheck] = useState(false);
 
-    //로그인 기능 ↓↓
-    const [loginObj, setloginObj] = useState({
-      email: ' ',
-      password: ' ',
-    })
-  
-    const [unCorrectText, setUnCorrectText] = useState({
-      email: '',
-      password: '',
-    })
-  
-    let correctCount = 0;
-  
-    const onLoginHandler = (e) => {
-      const { name, value } = e.target;
-      setloginObj({
-        ...loginObj,
-        [name]: value
-      });
+  //로그인 기능 ↓↓
+  const [loginObj, setloginObj] = useState({
+    email: ' ',
+    password: ' ',
+  })
+
+  const [unCorrectText, setUnCorrectText] = useState({
+    email: '',
+    password: '',
+  })
+
+  const onLoginHandler = (e) => {
+    const { name, value } = e.target;
+    setloginObj({
+      ...loginObj,
+      [name]: value
+    });
+
+  }
+  let correctCount = 0;
+
+  const valueIsRight = () => {
+    correctCount = 0;
+
+    const isEmail = emailCheck(loginObj.email);
+    if(isEmail === 'true'){
+      setUnCorrectText(prev => ({...prev, email: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, email: isEmail}));
     }
+
+    const isPassword = loginPasswordCheck(loginObj.password);
+    if(isPassword === 'true'){
+      setUnCorrectText(prev => ({...prev, password: ''}));
+      correctCount += 1;
+    } else {
+      setUnCorrectText(prev => ({...prev, password: isPassword}));
+    }
+  }
+
+  useEffect(() => {
+    valueIsRight();
+  },[loginObj])
+
+  const submitHandler = async(e) => {
+    e.preventDefault();
+    valueIsRight();
+
+    const body = {
+      email: loginObj.email,
+      password: loginObj.password,
+    }
+
+    if(correctCount !== Object.keys(loginObj).length){
+      alert('회원정보를 확인해주세요');
+    } else if(correctCount === Object.keys(loginObj).length) {
+      try {
+        console.log(body);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <>
@@ -43,7 +88,7 @@ export default function LoginPage() {
           <div>비회원로그인</div>
         </div>
         <div className='loginBox'>
-          <form>
+          <form onSubmit={submitHandler}>
             <div className='inputBox'> 
               <div className='InputContainer'>
                 <Input 
@@ -52,7 +97,7 @@ export default function LoginPage() {
                   placeholder='이메일'
                   onChange={onLoginHandler}
                 />
-                <p className='unRightText'></p>
+                <p className='unRightText'>{unCorrectText.email}</p>
               </div>
               <div className='InputContainer'>
                 <Input 
@@ -62,7 +107,7 @@ export default function LoginPage() {
                   placeholder='비밀번호'
                   onChange={onLoginHandler}
                 />
-                <p className='unRightText'></p>
+                <p className='unRightText'>{unCorrectText.password}</p>
               </div>
             </div>
             <div className='checkContainer'>
