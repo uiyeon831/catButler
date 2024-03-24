@@ -7,7 +7,7 @@ export default function MainPage() {
 
       </div>
       <div className='bestItem'>
-        <p className='title'>베스트 100</p>
+        <p className='title'>베스트 Item</p>
       </div>
 
     </Styled.mainContainer>
