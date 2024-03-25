@@ -7,12 +7,26 @@ export const headerContainer = styled.div`
   align-items: center;
   padding: 1.5rem;
 
+  .searchBox {
+    align-items: center;
+    position: relative;
+    display: flex;
+  }
+
   .searchInput {
-    width: 30rem;
-    height: 2.5rem;
+    width: 35rem;
+    height: 3rem;
     border: solid 1px black;
     border-radius: 2rem;
     padding: 1rem;
+  }
+
+  .searchIcon {
+    position: absolute;
+    right: 3.5%;
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .iconBox {
