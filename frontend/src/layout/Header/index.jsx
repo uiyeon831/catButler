@@ -22,7 +22,7 @@ export default function Header() {
       <div className='iconBox'>
         <Link><LikeIcon width='38' /></Link>
         <Link><CartIcon width='36' /></Link>
-        <PersonIcon width='35' />
+        <Link><PersonIcon width='35' /></Link>
       </div>
     </Styled.headerContainer>
   )
