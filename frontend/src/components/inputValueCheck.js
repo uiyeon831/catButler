@@ -62,6 +62,16 @@ export const phoneNumberCheck = ( value ) => {
   }
 }
 
+export const loginEmailCheck = ( value ) => {
+  if(value && value !== ''){
+    return 'true';
+  } else if(value === ' ') {
+    return '';
+  } else if(!value) {
+    return '이메일을 입력해주세요';
+  }
+}
+
 export const loginPasswordCheck = ( value ) => {
   if(value && value !== ''){
     return 'true';
