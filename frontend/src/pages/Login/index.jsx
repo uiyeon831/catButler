@@ -128,7 +128,7 @@ export default function LoginPage() {
           |
           <Link>아이디 찾기</Link>
           |
-          <Link>회원가입</Link>
+          <Link to={'/join'}>회원가입</Link>
         </div>
       </Styled.LoginContainer>
     </>
