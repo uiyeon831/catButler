@@ -9,7 +9,7 @@ import { Btn, Input } from '../../components/style';
 
 //icon
 import CatButlerLogo from "../../components/CatButlerLogo";
-import { emailCheck, loginPasswordCheck } from '../../components/inputValueCheck';
+import { loginEmailCheck, loginPasswordCheck } from '../../components/inputValueCheck';
 
 export default function LoginPage() {
   const [isCheck, setIsCheck] = useState(false);
@@ -38,7 +38,7 @@ export default function LoginPage() {
   const valueIsRight = () => {
     correctCount = 0;
 
-    const isEmail = emailCheck(loginObj.email);
+    const isEmail = loginEmailCheck(loginObj.email);
     if(isEmail === 'true'){
       setUnCorrectText(prev => ({...prev, email: ''}));
       correctCount += 1;
