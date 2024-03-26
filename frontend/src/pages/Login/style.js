@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { greyBeige ,darkPrimary,white } from "../../components/styleVariables";
+import { greyBeige ,darkPrimary, lightPrimary } from "../../components/styleVariables";
 
 export const LoginContainer = styled.div`
   width: 100%;
@@ -76,5 +76,28 @@ export const LoginContainer = styled.div`
     display: flex;
     gap: 2rem;
     font-size: 0.8rem;
+    padding-bottom: 1rem;
+  }
+
+  .socialLogin {
+    width: 28rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    border-top: solid 1px ${lightPrimary};
+    padding-top: 2.5rem;
+  }
+
+  .socialLoginIconBox {
+    display: flex;
+    gap: 3.5rem;
+    
+    > svg {
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 `
