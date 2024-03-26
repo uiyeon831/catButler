@@ -10,6 +10,9 @@ import { Btn, Input } from '../../components/style';
 //icon
 import CatButlerLogo from "../../components/CatButlerLogo";
 import { loginEmailCheck, loginPasswordCheck } from '../../components/inputValueCheck';
+import KakaoIcon from './../../components/icons/KakaoIcon';
+import NaverIcon from './../../components/icons/NaverIcon';
+import GoogleIcon from './../../components/icons/GoogleIcon';
 
 export default function LoginPage() {
   const [isCheck, setIsCheck] = useState(false);
@@ -129,6 +132,14 @@ export default function LoginPage() {
           <Link>아이디 찾기</Link>
           |
           <Link to={'/join'}>회원가입</Link>
+        </div>
+        <div className='socialLogin'>
+          <p>소셜로 로그인</p>
+          <div className='socialLoginIconBox'>
+            <KakaoIcon />
+            <NaverIcon />
+            <GoogleIcon />
+          </div>
         </div>
       </Styled.LoginContainer>
     </>
