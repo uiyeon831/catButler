@@ -49,7 +49,7 @@ export const userNameCheck = ( value ) => {
 }
 
 export const phoneNumberCheck = ( value ) => {
-  const phoneNumberRegex = /^(01[016789]{1})[0-9]{3,4}[0-9]{4}$/;
+  const phoneNumberRegex = /^(01[016789]{1})-[0-9]{3,4}-[0-9]{4}$/;
   const isRight = phoneNumberRegex.test(value);
   if(isRight) {
     return 'true';
@@ -63,7 +63,7 @@ export const phoneNumberCheck = ( value ) => {
 }
 
 export const loginEmailCheck = ( value ) => {
-  if(value && value !== ''){
+  if(value && value !== ''  && value !== ' '){
     return 'true';
   } else if(value === ' ') {
     return '';
@@ -73,7 +73,7 @@ export const loginEmailCheck = ( value ) => {
 }
 
 export const loginPasswordCheck = ( value ) => {
-  if(value && value !== ''){
+  if(value && value !== '' && value !== ' '){
     return 'true';
   } else if(value === ' ') {
     return '';

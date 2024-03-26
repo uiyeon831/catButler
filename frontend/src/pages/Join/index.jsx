@@ -173,7 +173,21 @@ export default function JoinPage() {
     phoneNumber: ''
   })
 
+  const [isDuplication, setIsDuplication] = useState(false);
+
   const onJoinHandler = (e) => {
+    const { name, value } = e.target;
+    setJoinObj({
+      ...joinObj,
+      [name]: value
+    });
+  }
+
+  const onPhoneNumberHandler = (e) => {
+    e.currentTarget.value = e.currentTarget.value
+    .replace(/[^0-9]/g, '')
+    .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+
     const { name, value } = e.target;
     setJoinObj({
       ...joinObj,
@@ -229,8 +243,23 @@ export default function JoinPage() {
   //유효성 체크
   useEffect(()=>{  
     valueIsRight();
-    
   },[joinObj])
+
+  const CheckEmailDuplication = async () => {
+    if(unCorrectText.email === '' && joinObj.email !== ' ') {
+      try {
+        const emailDuplicationApi = await api.get('/user/check');
+        if(emailDuplicationApi.status === 200) {
+          setIsDuplication(true);
+          setUnCorrectText(prev => ({...prev, email: '사용가능한 이메일 입니다.'}));
+        } else if(emailDuplicationApi.status === 409) {
+          setUnCorrectText(prev => ({...prev, email: '이미 사용중인 이메일 입니다.'}));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   const submitHandler = async() => {
     valueIsRight();
@@ -238,8 +267,14 @@ export default function JoinPage() {
     const body = {
       email: joinObj.email,
       password: joinObj.password,
-      userName: joinObj.userName,
-      phoneNumber: joinObj.phoneNumber
+      name: joinObj.userName,
+      phoneNumber: joinObj.phoneNumber,
+      termsAgree: contentObj[0].isCheck,
+      electronicAgree: contentObj[1].isCheck,
+      personalInfoAgree: contentObj[2].isCheck,
+      marketingAgree: contentObj[3].isCheck,
+      emailAgree: contentObj[4].sub[0].isCheck,
+      snsAgree: contentObj[4].sub[1].isCheck
     }
 
     const isRequireContent =  contentObj.filter((element) => element.isRequire === true );
@@ -250,10 +285,14 @@ export default function JoinPage() {
       alert('회원정보를 확인해주세요');
     } else if(isRequireContent.length !== isAllCheck.length){
       alert('필수항목을 동의해주세요');
-    } else if(correctCount === Object.keys(joinObj).length && isRequireContent.length === isAllCheck.length) {
+    } else if(isDuplication === false) {
+      alert('이메일 중복 검사를 해주세요');
+    } else if(correctCount === Object.keys(joinObj).length && isRequireContent.length === isAllCheck.length && isDuplication === true) {
       try {
-        const joinApi = await api.post('/users/register');
+        const joinApi = await api.post('/user/register', body);
         if(joinApi.status){
+          alert(`회원가입에 성공했습니다. 
+로그인 해주세요`)
           navigate('/');
         }
         console.log(body);
@@ -270,12 +309,20 @@ export default function JoinPage() {
           <div className='writeInformation'>
             <p>회원정보를 입력해주세요</p>
             <div className='InputContainer'>
-              <Input 
-                type='text'
-                name='email'
-                placeholder='이메일'
-                onChange={onJoinHandler}
-              />
+              <div className='emailBox'>
+                <Input 
+                  type='text'
+                  name='email'
+                  placeholder='이메일'
+                  onChange={onJoinHandler}
+                />
+                <button 
+                  className='duplication' 
+                  onClick={() => CheckEmailDuplication()}
+                >
+                  중복확인
+                </button>
+              </div>
               <p className='unRightText'>{unCorrectText.email}</p>
             </div>
             <div className='InputContainer'>
@@ -309,10 +356,11 @@ export default function JoinPage() {
             </div>
             <div className='InputContainer'>
               <Input 
-                type='number'
+                type='text'
                 name='phoneNumber'
+                maxLength={13}
                 placeholder='핸드폰 번호 (숫자만 입력)'
-                onChange={onJoinHandler}
+                onChange={(e) => {onPhoneNumberHandler(e)}}
               />
               <p className='unRightText'>{unCorrectText.phoneNumber}</p>
             </div>

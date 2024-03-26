@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { primary } from "../../components/styleVariables";
+import { primary, lightPrimary, darkPrimary } from "../../components/styleVariables";
 
 export const JoinContainer = styled.div`
   width: 100%;
@@ -35,6 +35,30 @@ export const JoinContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .emailBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    
+    > input {
+      width: 22rem;
+    }
+  }
+
+  .duplication {
+    width: 5.5rem;
+    height: 3rem;
+    background-color: ${lightPrimary};
+    color: ${darkPrimary};
+    border-radius: 1rem;
+    font-weight: 600;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .unRightText {
