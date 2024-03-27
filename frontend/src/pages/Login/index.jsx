@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { open, close } from '../../store/alertModalSlice';
@@ -16,8 +16,11 @@ import { loginEmailCheck, loginPasswordCheck } from '../../components/inputValue
 import KakaoIcon from './../../components/icons/KakaoIcon';
 import NaverIcon from './../../components/icons/NaverIcon';
 import GoogleIcon from './../../components/icons/GoogleIcon';
+import { api } from '../../utils/axios';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
   const [isCheck, setIsCheck] = useState(false);
 
   //로그인 기능 ↓↓
@@ -101,7 +104,16 @@ export default function LoginPage() {
       dispatch(open({text: alertText, type: 'warning'}));
     } else if(correctCount === Object.keys(loginObj).length) {
       try {
-        console.log(body);
+        const loginApi = await api.post('/auth/local', body);
+        if(loginApi.status === 201){
+          console.log('loginApi: ', loginApi)
+          if(isCheck){
+            window.localStorage.setItem('Token', loginApi.headers.accesstoken);
+          } else {
+            window.sessionStorage.setItem('Token', loginApi.headers.accesstoken);
+          }
+          navigate('/');
+        }
       } catch (error) {
         console.error(error);
       }
