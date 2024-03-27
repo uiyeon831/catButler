@@ -1,9 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { open, close } from '../../store/alertModalSlice';
 
 import Checkbox from '../../components/Checkbox';
 import { emailCheck, passwordCheck, confirmPasswordCheck, userNameCheck, phoneNumberCheck } from '../../components/inputValueCheck';
 import { api } from '../../utils/axios';
+import Alert from '../../components/Alert';
 
 //styled-components
 import * as Styled from './style';
@@ -261,6 +264,21 @@ export default function JoinPage() {
     }
   }
 
+  //alert 띄워주는 redux
+  const isAlert = useSelector(state => state.alertModal.open);
+  const dispatch = useDispatch();
+
+  const isAlertModal = (params) => {
+    return (
+      <Alert
+        open={params}
+        onClose={() => {
+          dispatch(close())
+        }}
+      />
+    )
+  }
+
   const submitHandler = async() => {
     valueIsRight();
 
@@ -282,17 +300,22 @@ export default function JoinPage() {
     
 
     if(correctCount !== Object.keys(joinObj).length){
-      alert('회원정보를 확인해주세요');
+      const alertText = '회원정보를 확인해주세요';
+      dispatch(open({text: alertText, type: 'warning'}));
     } else if(isRequireContent.length !== isAllCheck.length){
-      alert('필수항목을 동의해주세요');
+      const alertText = '필수항목을 동의해주세요';
+      dispatch(open({text: alertText, type: 'warning'}));
     } else if(isDuplication === false) {
-      alert('이메일 중복 검사를 해주세요');
+      const alertText = '이메일 중복 검사를 해주세요';
+      dispatch(open({text: alertText, type: 'warning'}));
     } else if(correctCount === Object.keys(joinObj).length && isRequireContent.length === isAllCheck.length && isDuplication === true) {
       try {
         const joinApi = await api.post('/user/register', body);
         if(joinApi.status){
-          alert(`회원가입에 성공했습니다. 
-로그인 해주세요`)
+          const alertText = `회원가입에 성공했습니다. 
+로그인 해주세요`;
+          dispatch(open({text: alertText, type: 'success'}));
+
           navigate('/');
         }
         console.log(body);
@@ -421,6 +444,7 @@ export default function JoinPage() {
           </div>
           <Btn onClick={() => {submitHandler()}}>회원가입</Btn>
       </Styled.JoinContainer>
+      {isAlert && isAlertModal()}
     </>
   )
 }
