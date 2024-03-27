@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { open, close } from '../../store/alertModalSlice';
 
 import Checkbox from '../../components/Checkbox';
+import Alert from '../../components/Alert';
 
 //styled-components
 import * as Styled from './style';
@@ -62,6 +65,28 @@ export default function LoginPage() {
     valueIsRight();
   },[loginObj])
 
+  //alert 띄워주는 redux
+  const isAlert = useSelector(state => state.alertModal.open);
+  const dispatch = useDispatch();
+
+  const isAlertModal = (params) => {
+    return (
+      <Alert
+        open={params}
+        onClose={() => {
+          dispatch(close())
+        }}
+      />
+    )
+  }
+
+  useEffect(() => {
+    if(isCheck) {
+      const alertText = '로그인 유지는 개인정보 보호를 위해 개인 기기에서만 이용해주세요';
+      dispatch(open({text: alertText, type: 'informational'}));
+    }
+  }, [isCheck])
+
   const submitHandler = async(e) => {
     e.preventDefault();
     valueIsRight();
@@ -72,7 +97,8 @@ export default function LoginPage() {
     }
 
     if(correctCount !== Object.keys(loginObj).length){
-      alert('회원정보를 확인해주세요');
+      const alertText = '회원정보를 확인해주세요';
+      dispatch(open({text: alertText, type: 'warning'}));
     } else if(correctCount === Object.keys(loginObj).length) {
       try {
         console.log(body);
@@ -142,6 +168,7 @@ export default function LoginPage() {
           </div>
         </div>
       </Styled.LoginContainer>
+      {isAlert && isAlertModal()}
     </>
   )
 }
