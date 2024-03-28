@@ -46,8 +46,11 @@ export default function Header() {
       <ArrowIcon width='10' />
     </div>
     <div className='textBox'>
-      <p>1 : 1 문의</p>
+      <p>마이페이지</p>
       <ArrowIcon width='10' />
+    </div>
+    <div className='logout'>
+      <p>로그아웃</p>
     </div>
   </>
 
