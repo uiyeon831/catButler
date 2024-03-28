@@ -49,7 +49,7 @@ export const headerContainer = styled.div`
 
 export const HoverContainer = styled.div`
   width: 21rem;
-  height: 25rem;
+  height: 28rem;
   position: fixed;
   top: 8.5%;
   right: 1%;
@@ -59,7 +59,7 @@ export const HoverContainer = styled.div`
 
   .hoverBox{
     width: 20rem;
-    height: 24rem;
+    height: 27rem;
     background-color: white;
     border: solid 1px ${primary};
     border-radius: 1.5rem;
@@ -79,6 +79,21 @@ export const HoverContainer = styled.div`
     &:hover {
       cursor: pointer;
       font-weight: 600;
+    }
+  }
+
+  .logout {
+    width: 13rem;
+    display: flex;
+    justify-content: right;
+    
+    > p {
+      text-decoration: underline;
+
+      &:hover {
+        cursor: pointer;
+        font-weight: 600;
+      }
     }
   }
 
