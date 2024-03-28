@@ -8,6 +8,14 @@ import LoginPage from './pages/Login/index';
 import ProductPage from './pages/Product/index';
 import ProductDetailPage from './pages/ProductDetail/index';
 
+//admin
+import AdminProduct from './pages/Admin/Product/index';
+import AdminCategory from './pages/Admin/Category/index';
+import AdminUser from './pages/Admin/User/index';
+import AdminOrder from './pages/Admin/Order/index';
+import RegisterProduct from "./pages/Admin/RegisterProduct";
+
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -30,6 +38,36 @@ export const router = createBrowserRouter([
       {
         path: ':id',
         element: <ProductDetailPage />,
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    element: <Layout />,
+    children: [
+      {
+        path: '',
+        element: <AdminProduct />,
+      },
+      {
+        path: 'product',
+        element: <AdminProduct />,
+      },
+      {
+        path: 'product/register',
+        element: <RegisterProduct />,
+      },
+      {
+        path: 'category',
+        element: <AdminCategory />,
+      },
+      {
+        path: 'user',
+        element: <AdminUser />,
+      },
+      {
+        path: 'order',
+        element: <AdminOrder />,
       },
     ],
   },
