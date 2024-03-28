@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { darkPrimary, lightPrimary, primary } from "../../components/styleVariables";
 
 export const headerContainer = styled.div`
   display: flex;
@@ -35,5 +36,87 @@ export const headerContainer = styled.div`
     justify-content: center;
     gap: 2rem;
     padding-right: 1rem;
+  }
+
+  .personIconBox {
+    > svg {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+`
+
+export const HoverContainer = styled.div`
+  width: 21rem;
+  height: 25rem;
+  position: fixed;
+  top: 8.5%;
+  right: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .hoverBox{
+    width: 20rem;
+    height: 24rem;
+    background-color: white;
+    border: solid 1px ${primary};
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.3rem;
+  }
+  
+
+  .textBox {
+    width: 13rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      font-weight: 600;
+    }
+  }
+
+  .textContainer {
+    width: 14rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    gap: 0.5rem;
+  }
+
+  .lineContainer {
+    padding: 0.4rem 0;
+  }
+
+  .line {
+    width: 16rem;
+    height: 1px;
+    background-color: ${primary};
+  }
+
+  .btnContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 0.6rem;
+
+    button {
+      width: 8rem;
+      height: 3rem;
+      border-radius: 1.2rem;
+      font-size: 1rem;
+    }
+    > :last-child > button {
+      background-color: ${lightPrimary};
+      color: ${darkPrimary};
+    }
+
   }
 `
