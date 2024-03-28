@@ -23,6 +23,16 @@ export default function LoginPage() {
 
   const [isCheck, setIsCheck] = useState(false);
 
+    //로그인 상태일 때 login페이지 접근 막는 useEffect
+  useEffect(() => {
+    const localToken = localStorage.getItem('Token');
+    const sessoionToken = sessionStorage.getItem('Token');
+  
+    if(localToken || sessoionToken){
+      navigate('/');
+    }
+  })
+
   //로그인 기능 ↓↓
   const [loginObj, setloginObj] = useState({
     email: ' ',

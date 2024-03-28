@@ -20,6 +20,16 @@ import ArrowIcon from './../../components/icons/ArrowIcon';
 export default function JoinPage() {
   const navigate = useNavigate();
 
+  //로그인 상태일 때 join페이지 접근 막는 useEffect
+  useEffect(() => {
+    const localToken = localStorage.getItem('Token');
+    const sessoionToken = sessionStorage.getItem('Token');
+  
+    if(localToken || sessoionToken){
+      navigate('/');
+    }
+  })
+
   //동의 체크 관련 기능 ↓↓
   const agreeContent = [
     {id: 1, isRequire: true, content: '냥집사 이용약관 동의', isCheck: false},
